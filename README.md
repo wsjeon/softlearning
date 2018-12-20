@@ -1,3 +1,7 @@
+I forked [rail-berkeley](rail-berkeley/softlearning) and did **Docker Installation** with **GPU**. 
+
+--------------------------------------------------------------------------------------------------------------
+
 # Softlearning
 
 Softlearning is a deep reinforcement learning toolbox for training maximum entropy policies in continuous domains. The implementation is fairly thin and primarily optimized for our own development purposes. It utilizes the tf.keras modules for most of the model classes (e.g. policies and value functions). We use Ray for the experiment orchestration. Ray Tune and Autoscaler implement several neat features that enable us to seamlessly run the same experiment scripts that we use for local prototyping to launch large-scale experiments on any chosen cloud service (e.g. GCP or AWS), and intelligently parallelize and distribute training for effective resource allocation.
@@ -43,7 +47,7 @@ To build the image and run the container:
 ```
 export MJKEY="$(cat ~/.mujoco/mjkey.txt)" \
     && docker-compose \
-        -f ./docker/docker-compose.dev.cpu.yml \
+        -f ./docker/docker-compose.dev.gpu.yml \
         up \
         -d \
         --force-recreate
@@ -60,7 +64,7 @@ See examples section for examples of how to train and simulate the agents.
 Finally, to clean up the docker setup:
 ```
 docker-compose \
-    -f ./docker/docker-compose.dev.cpu.yml \
+    -f ./docker/docker-compose.dev.gpu.yml \
     down \
     --rmi all \
     --volumes
