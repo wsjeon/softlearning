@@ -82,7 +82,8 @@ python -m examples.development.main \
     --domain=HalfCheetah \
     --task=v2 \
     --exp-name=my-sac-experiment-1 \
-    --checkpoint-frequency=1000  # Save the checkpoint to resume training later
+    --checkpoint-frequency=1000 \ # Save the checkpoint to resume training later
+    --gpus 2 # I added this part, but I still cannot figure out how to use gpus. 
 ```
 
 2. To simulate the resulting policy:
