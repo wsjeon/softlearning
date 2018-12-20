@@ -59,6 +59,7 @@ You can access the container with the typical Docker [exec](https://docs.docker.
 ```
 docker exec -it softlearning-dev-gpu /bin/bash
 ```
+Note that `exec` is working with **container** and the container's name can be known by `docker container ls`.
 
 See examples section for examples of how to train and simulate the agents.
 
