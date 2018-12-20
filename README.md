@@ -50,7 +50,7 @@ export MJKEY="$(cat ~/.mujoco/mjkey.txt)" \
         -f ./docker/docker-compose.dev.gpu.yml \
         up \
         -d \
-        --force-recreat
+        --force-recreate
 ```
 assuming that MuJoCo license is included in `~/.mujoco/mjkey.txt`.
 
