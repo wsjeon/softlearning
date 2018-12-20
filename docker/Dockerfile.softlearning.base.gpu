@@ -138,6 +138,9 @@ RUN echo "${MJKEY}" > /root/.mujoco/mjkey.txt \
     && rm /tmp/requirements.txt \
     && rm /tmp/environment.yml
 
+RUN /bin/bash -c "source activate base && conda list && conda env list"
+RUN /bin/bash -c "source activate softlearning && conda list && conda env list"
+
 RUN echo "conda activate softlearning" >> /root/.bashrc
 ENV BASH_ENV /root/.bashrc
 
