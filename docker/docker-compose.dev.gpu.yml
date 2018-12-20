@@ -2,7 +2,7 @@
 # development. You need to have your MJKEY set in the environment.
 #
 # docker-compose \
-#     -f ./docker/docker-compose.dev.yml \
+#     -f ./docker/docker-compose.dev.gpu.yml \
 #     build \
 #         --build-arg MJKEY="$(cat ~/.mujoco/mjkey.txt)"
 
