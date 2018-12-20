@@ -45,10 +45,12 @@ conda remove --name softlearning --all
 ### docker-compose
 To build the image and run the container:
 ```
-docker-compose \
-    -f ./docker/docker-compose.dev.gpu.yml \
-    build \
-        --build-arg MJKEY="$(cat ~/.mujoco/mjkey.txt)"
+export MJKEY="$(cat ~/.mujoco/mjkey.txt)" \
+    && docker-compose \
+        -f ./docker/docker-compose.dev.gpu.yml \
+        up \
+        -d \
+        --force-recreat
 ```
 assuming that MuJoCo license is included in `~/.mujoco/mjkey.txt`.
 
