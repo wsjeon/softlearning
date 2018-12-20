@@ -57,7 +57,7 @@ assuming that MuJoCo license is included in `~/.mujoco/mjkey.txt`.
 You can access the container with the typical Docker [exec](https://docs.docker.com/engine/reference/commandline/exec/)-command, i.e.
 
 ```
-docker exec -it softlearning bash
+docker exec -it softlearning-dev-gpu /bin/bash
 ```
 
 See examples section for examples of how to train and simulate the agents.
