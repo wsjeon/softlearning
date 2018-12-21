@@ -29,7 +29,7 @@ echo "export LD_LIBRARY_PATH=\$HOME/.mujoco/mjpro150/bin:\$LD_LIBRARY_PATH" >> ~
 ```
 SOFTLEARNING_PATH=$HOME/PycharmProjects/softlearning # specified by user
 git clone https://github.com/wsjeon/softlearning.git $SOFTLEARNING_PATH
-echo "cd $SOFTLEARNING_PATH/softlearning" >> ~/.bashrc
+echo "cd $SOFTLEARNING_PATH" >> ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -37,12 +37,14 @@ source ~/.bashrc
 ```
 conda create -y -n softlearning python=3.6.5
 conda activate softlearning
-MUJOCO_PY_PATH=$HOME/PycharmProjects/mujoco-py
-git clone https://github.com/wsjeon/mujoco-py.git $MUJOCO_PY_PATH
-cd $MUJOCO_PY_PATH
-pip install -e .
-cd $SOFTLEARNING_PATH
+pip install -e git+https://github.com/openai/mujoco-py.git@9ea9bb000d6b8551b99f9aa440862e0c7f7b4191#egg=mujoco_py
 conda env update -f environment.yml
+```
+
+5. Check whether `mujoco_py` is successfully installed:
+```
+echo "export C_INCLUDE_PATH=$HOME/anaconda3/envs/softlearning/include:\$C_INCLUDE_PATH" >> ~/.bashrc
+python -c "import mujoco_py"
 ```
 
 The environment should be ready to run. See examples section for examples of how to train and simulate the agents.
