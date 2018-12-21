@@ -1,4 +1,4 @@
-I forked [rail-berkeley](rail-berkeley/softlearning) and did **Docker Installation** with **GPU**. 
+I installed softlearning with GPU settings. 
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +18,11 @@ The environment can be run either locally using conda or inside a docker contain
 
 1. [Download](https://www.roboti.us/index.html) and install MuJoCo 1.50 from the MuJoCo website. We assume that the MuJoCo files are extracted to the default location (`~/.mujoco/mjpro150`).
 
-2. Copy your MuJoCo license key (mjkey.txt) to ~/.mujoco/mjkey.txt:
+2. Copy your MuJoCo license key (mjkey.txt) to ~/.mujoco/mjkey.txt, and 
+```
+USER=wsjeon
+echo "export LD_LIBRARY_PATH=/home/$USER/.mujoco/mjpro150/bin:$LD_LIBRARY_PATH" >> ~/.bashrc
+```
 
 3. Clone `softlearning`
 ```
