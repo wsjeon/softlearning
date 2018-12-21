@@ -20,20 +20,29 @@ The environment can be run either locally using conda or inside a docker contain
 
 2. Copy your MuJoCo license key (mjkey.txt) to ~/.mujoco/mjkey.txt, and 
 ```
-USER=wsjeon
-echo "export LD_LIBRARY_PATH=/home/$USER/.mujoco/mjpro150/bin:$LD_LIBRARY_PATH" >> ~/.bashrc
+echo "export LD_LIBRARY_PATH=\$HOME/.mujoco/mjpro150/bin:\$LD_LIBRARY_PATH" >> ~/.bashrc
 ```
+
+3. Install [Anaconda3](https://www.anaconda.com/download/).
 
 3. Clone `softlearning`
 ```
-git clone https://github.com/wsjeon/softlearning.git ${SOFTLEARNING_PATH}
+SOFTLEARNING_PATH=$HOME/PycharmProjects/softlearning # specified by user
+git clone https://github.com/wsjeon/softlearning.git $SOFTLEARNING_PATH
+echo "cd $SOFTLEARNING_PATH/softlearning" >> ~/.bashrc
+source ~/.bashrc
 ```
 
 4. Create and activate conda environment
 ```
-cd ${SOFTLEARNING_PATH}
-conda env create -f environment.yml
+conda create -y -n softlearning python=3.6.5
 conda activate softlearning
+MUJOCO_PY_PATH=$HOME/PycharmProjects/mujoco-py
+git clone https://github.com/wsjeon/mujoco-py.git $MUJOCO_PY_PATH
+cd $MUJOCO_PY_PATH
+pip install -e .
+cd $SOFTLEARNING_PATH
+conda env update -f environment.yml
 ```
 
 The environment should be ready to run. See examples section for examples of how to train and simulate the agents.
