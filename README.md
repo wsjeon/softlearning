@@ -26,7 +26,7 @@ echo "export LD_LIBRARY_PATH=/home/$USER/.mujoco/mjpro150/bin:$LD_LIBRARY_PATH" 
 
 3. Clone `softlearning`
 ```
-git clone https://github.com/rail-berkeley/softlearning.git ${SOFTLEARNING_PATH}
+git clone https://github.com/wsjeon/softlearning.git ${SOFTLEARNING_PATH}
 ```
 
 4. Create and activate conda environment
