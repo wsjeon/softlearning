@@ -30,7 +30,6 @@ echo "export LD_LIBRARY_PATH=\$HOME/.mujoco/mjpro150/bin:\$LD_LIBRARY_PATH" >> ~
 SOFTLEARNING_PATH=$HOME/PycharmProjects/softlearning # specified by user
 git clone https://github.com/wsjeon/softlearning.git $SOFTLEARNING_PATH
 echo "cd $SOFTLEARNING_PATH" >> ~/.bashrc
-source ~/.bashrc
 ```
 
 4. Create and activate conda environment
@@ -44,6 +43,9 @@ conda env update -f environment.yml
 5. Check whether `mujoco_py` is successfully installed:
 ```
 echo "export C_INCLUDE_PATH=$HOME/anaconda3/envs/softlearning/include:\$C_INCLUDE_PATH" >> ~/.bashrc
+echo "export LD_PRELOAD=$HOME/anaconda3/envs/softlearning/lib/libGLEW.so"
+source ~/.bashrc
+conda activate softlearning
 python -c "import mujoco_py"
 ```
 
