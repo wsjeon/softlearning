@@ -2,12 +2,10 @@ name: softlearning
 channels:
 - defaults
 - conda-forge
-- menpo
 dependencies:
 - python=3.6.5
 - pip>=18.0
 - conda>=4.5.9
 - patchelf=0.9
-- osmesa
 - pip:
     - -r ./requirements.txt
