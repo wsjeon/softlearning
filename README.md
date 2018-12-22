@@ -16,31 +16,61 @@ The environment can be run either locally using conda or inside a docker contain
 
 ## Conda Installation
 
-1. [Download](https://www.roboti.us/index.html) and install MuJoCo 1.50 from the MuJoCo website. We assume that the MuJoCo files are extracted to the default location (`~/.mujoco/mjpro150`).
+1. Install [Anaconda3](https://www.anaconda.com/download/).
 
-2. Copy your MuJoCo license key (mjkey.txt) to ~/.mujoco/mjkey.txt, and 
+2. [Download](https://www.roboti.us/index.html) and install MuJoCo 1.50 from the MuJoCo website. We assume that the MuJoCo files are extracted to the default location (`~/.mujoco/mjpro150`).
+
+3. Copy your MuJoCo license key (mjkey.txt) to ~/.mujoco/mjkey.txt, and 
 ```
 echo "export LD_LIBRARY_PATH=\$HOME/.mujoco/mjpro150/bin:\$LD_LIBRARY_PATH" >> ~/.bashrc
+source ~/.bashrc
 ```
 
-3. Install [Anaconda3](https://www.anaconda.com/download/).
-
-3. Clone `softlearning`
+4. Clone `softlearning`
 ```
 SOFTLEARNING_PATH=$HOME/PycharmProjects/softlearning # specified by user
 git clone https://github.com/wsjeon/softlearning.git $SOFTLEARNING_PATH
 echo "cd $SOFTLEARNING_PATH" >> ~/.bashrc
+source ~/.bashrc
 ```
 
-4. Create and activate conda environment
+5. Install dependencies:
+```
+# I installed the following due to cannot find -lGL error, but I cannot clarify, which one solves this issue.
+sudo apt-get install libglfw3 libglfw3-dev libgl1-mesa-dev libgl1-mesa-glx libglew-dev
+```
+
+5. Create and activate conda environment
 ```
 conda create -y -n softlearning python=3.6.5
-conda activate softlearning
-pip install -e git+https://github.com/openai/mujoco-py.git@9ea9bb000d6b8551b99f9aa440862e0c7f7b4191#egg=mujoco_py
+echo "conda activate softlearning" >> ~/.bashrc
+source ~/.bashrc
+
+# If GL/osmesa.h: No such file or directory occurs, 
+# conda install -y -c menpo osmesa 
+# echo "export C_INCLUDE_PATH=$HOME/anaconda3/envs/softlearning/include:\$C_INCLUDE_PATH" >> ~/.bashrc
+# source ~/.bashrc
+
 conda env update -f environment.yml
+
+
+
+
+
+
+conda install pyopengl
+source ~/.bashrc
+conda env update -f environment.yml
+
+conda install -c conda-forge glew 
+
+echo "export LD_PRELOAD=$HOME/anaconda3/envs/softlearning/lib/libGLEW.so"
+
+
+
 ```
 
-5. Check whether `mujoco_py` is successfully installed:
+6. Check whether `mujoco_py` is successfully installed:
 ```
 echo "export C_INCLUDE_PATH=$HOME/anaconda3/envs/softlearning/include:\$C_INCLUDE_PATH" >> ~/.bashrc
 echo "export LD_PRELOAD=$HOME/anaconda3/envs/softlearning/lib/libGLEW.so"
