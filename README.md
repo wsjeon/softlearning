@@ -47,36 +47,14 @@ echo "conda activate softlearning" >> ~/.bashrc
 source ~/.bashrc
 
 # If GL/osmesa.h: No such file or directory occurs, 
-# conda install -y -c menpo osmesa 
-# echo "export C_INCLUDE_PATH=$HOME/anaconda3/envs/softlearning/include:\$C_INCLUDE_PATH" >> ~/.bashrc
-# source ~/.bashrc
-
-conda env update -f environment.yml
-
-
-
-
-
-
-conda install pyopengl
-source ~/.bashrc
-conda env update -f environment.yml
-
-conda install -c conda-forge glew 
-
-echo "export LD_PRELOAD=$HOME/anaconda3/envs/softlearning/lib/libGLEW.so"
-
-
-
-```
-
-6. Check whether `mujoco_py` is successfully installed:
-```
+conda install -y -c menpo osmesa 
 echo "export C_INCLUDE_PATH=$HOME/anaconda3/envs/softlearning/include:\$C_INCLUDE_PATH" >> ~/.bashrc
-echo "export LD_PRELOAD=$HOME/anaconda3/envs/softlearning/lib/libGLEW.so"
 source ~/.bashrc
-conda activate softlearning
-python -c "import mujoco_py"
+
+# If libgcrypt error occurs:
+conda install -c clinicalgraphics libgcrypt11
+
+conda env update -f environment.yml
 ```
 
 The environment should be ready to run. See examples section for examples of how to train and simulate the agents.
