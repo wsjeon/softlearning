@@ -7,5 +7,7 @@ dependencies:
 - pip>=18.0
 - conda>=4.5.9
 - patchelf=0.9
+- cudatoolkit=9.0
+- cudnn=7.1
 - pip:
     - -r ./requirements.txt
