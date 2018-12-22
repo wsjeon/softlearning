@@ -36,7 +36,7 @@ source ~/.bashrc
 
 5. Install dependencies:
 ```
-# I installed the following since I cannot find -lGL error. Until now, I cannot clarify which one solves this issue.
+# I installed the following since I cannot find -lGL error. Until now, I did not clarify which one solves this issue.
 sudo apt-get install libglfw3 libglfw3-dev libgl1-mesa-dev libgl1-mesa-glx libglew-dev
 ```
 
