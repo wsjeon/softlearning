@@ -1,3 +1,6 @@
+import gzip
+import pickle
+
 import numpy as np
 
 from .replay_pool import ReplayPool
@@ -16,6 +19,7 @@ class FlexibleReplayPool(ReplayPool):
 
         self._pointer = 0
         self._size = 0
+        self._samples_since_save = 0
 
     @property
     def size(self):
@@ -34,6 +38,7 @@ class FlexibleReplayPool(ReplayPool):
     def _advance(self, count=1):
         self._pointer = (self._pointer + count) % self._max_size
         self._size = min(self._size + count, self._max_size)
+        self._samples_since_save += count
 
     def add_sample(self, **kwargs):
         self.add_samples(1, **kwargs)
@@ -59,32 +64,70 @@ class FlexibleReplayPool(ReplayPool):
     def random_batch(self, batch_size, field_name_filter=None, **kwargs):
         random_indices = self.random_indices(batch_size)
         return self.batch_by_indices(
-            random_indices, field_name_filter, **kwargs)
+            random_indices, field_name_filter=field_name_filter, **kwargs)
 
     def last_n_batch(self, last_n, field_name_filter=None, **kwargs):
         last_n_indices = np.arange(
             self._pointer - min(self.size, last_n), self._pointer
         ) % self._max_size
         return self.batch_by_indices(
-            last_n_indices, field_name_filter, **kwargs)
+            last_n_indices, field_name_filter=field_name_filter, **kwargs)
+
+    def filter_fields(self, field_names, field_name_filter):
+        if isinstance(field_name_filter, str):
+            field_name_filter = [field_name_filter]
+
+        if isinstance(field_name_filter, (list, tuple)):
+            field_name_list = field_name_filter
+
+            def filter_fn(field_name):
+                return field_name in field_name_list
+
+        else:
+            filter_fn = field_name_filter
+
+        filtered_field_names = [
+            field_name for field_name in field_names
+            if filter_fn(field_name)
+        ]
+
+        return filtered_field_names
 
     def batch_by_indices(self, indices, field_name_filter=None):
-        if any(indices % self._max_size) > self.size:
+        if np.any(indices % self._max_size > self.size):
             raise ValueError(
                 "Tried to retrieve batch with indices greater than current"
                 " size")
 
         field_names = self.field_names
         if field_name_filter is not None:
-            field_names = [
-                field_name for field_name in field_names
-                if field_name_filter(field_name)
-            ]
+            field_names = self.filter_fields(
+                field_names, field_name_filter)
 
         return {
             field_name: getattr(self, field_name)[indices]
             for field_name in field_names
         }
+
+    def save_latest_experience(self, pickle_path):
+        latest_samples = self.last_n_batch(self._samples_since_save)
+
+        with gzip.open(pickle_path, 'wb') as f:
+            pickle.dump(latest_samples, f)
+
+        self._samples_since_save = 0
+
+    def load_experience(self, experience_path):
+        with gzip.open(experience_path, 'rb') as f:
+            latest_samples = pickle.load(f)
+
+        key = list(latest_samples.keys())[0]
+        num_samples = latest_samples[key].shape[0]
+        for field_name, data in latest_samples.items():
+            assert data.shape[0] == num_samples, data.shape
+
+        self.add_samples(num_samples, **latest_samples)
+        self._samples_since_save = 0
 
     def __getstate__(self):
         state = self.__dict__.copy()

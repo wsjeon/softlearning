@@ -57,31 +57,30 @@ ALGORITHM_PARAMS_BASE = {
         'lr': 3e-4,
         'discount': 0.99,
         'target_update_interval': 1,
-        'tau': 0.005,
+        'tau': 5e-3,
         'target_entropy': 'auto',
         'reward_scale': 1.0,
         'store_extra_policy_info': False,
         'action_prior': 'uniform',
-        'save_full_state': False,
     }
 }
 
 DEFAULT_NUM_EPOCHS = 200
 
 NUM_EPOCHS_PER_DOMAIN = {
-    'Swimmer': int(3e2 + 1),
-    'Hopper': int(1e3 + 1),
-    'HalfCheetah': int(3e3 + 1),
-    'Walker': int(3e3 + 1),
-    'Ant': int(3e3 + 1),
-    'Humanoid': int(1e4 + 1),
-    'Pusher2d': int(2e3 + 1),
-    'HandManipulatePen': int(1e4 + 1),
-    'HandManipulateEgg': int(1e4 + 1),
-    'HandManipulateBlock': int(1e4 + 1),
-    'HandReach': int(1e4 + 1),
-    'Point2DEnv': int(200 + 1),
-    'Reacher': int(200 + 1),
+    'Swimmer': int(3e2),
+    'Hopper': int(1e3),
+    'HalfCheetah': int(3e3),
+    'Walker': int(3e3),
+    'Ant': int(3e3),
+    'Humanoid': int(1e4),
+    'Pusher2d': int(2e3),
+    'HandManipulatePen': int(1e4),
+    'HandManipulateEgg': int(1e4),
+    'HandManipulateBlock': int(1e4),
+    'HandReach': int(1e4),
+    'Point2DEnv': int(200),
+    'Reacher': int(200),
 }
 
 ALGORITHM_PARAMS_PER_DOMAIN = {
@@ -158,7 +157,7 @@ ENV_PARAMS = {
     }
 }
 
-NUM_CHECKPOINTS = 5
+NUM_CHECKPOINTS = 10
 
 
 def get_variant_spec(universe, domain, task, policy):
@@ -200,10 +199,12 @@ def get_variant_spec(universe, domain, task, policy):
             }
         },
         'run_params': {
-            'seed': lambda spec: np.random.randint(0, 10000),
+            'seed': tune.sample_from(
+                lambda spec: np.random.randint(0, 10000)),
             'checkpoint_at_end': True,
             'checkpoint_frequency': NUM_EPOCHS_PER_DOMAIN.get(
-                domain, DEFAULT_NUM_EPOCHS) // NUM_CHECKPOINTS
+                domain, DEFAULT_NUM_EPOCHS) // NUM_CHECKPOINTS,
+            'checkpoint_replay_pool': False,
         },
     }
 
@@ -222,6 +223,7 @@ def get_variant_spec_image(universe, domain, task, policy, *args, **kwargs):
                 'output_size': M,
                 'conv_filters': (4, 4),
                 'conv_kernel_sizes': ((3, 3), (3, 3)),
+                'pool_type': 'MaxPool2D',
                 'pool_sizes': ((2, 2), (2, 2)),
                 'pool_strides': (2, 2),
                 'dense_hidden_layer_sizes': (),
